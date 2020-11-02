@@ -47,6 +47,7 @@ Version|Date|Comments
 1.0.12|April 19, 2020|Upgraded to SPFx 1.10
 1.0.13|April 28, 2020|Added support for Dynamic Data
 1.0.14|October 30, 2020|Fixed (lookup-)fields with special characters
+1.0.15|November 2, 2020|Added support for image-fields
 
 ## Disclaimer
 
