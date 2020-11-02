@@ -586,7 +586,7 @@ export class ContentQueryService implements IContentQueryService {
                 normalizedResult[viewField] = {
                     textValue: result.FieldValuesAsText[formattedName],
                     htmlValue: result.FieldValuesAsHtml[formattedName],
-                    rawValue: result[viewField] || result[viewField + 'Id']
+                    rawValue: this.jsonParseField(result[viewField] || result[viewField + 'Id'])
                 };
             }
             normalizedResults.push(normalizedResult);
@@ -594,6 +594,25 @@ export class ContentQueryService implements IContentQueryService {
         return normalizedResults;
     }
 
+    /**************************************************************************************************
+     * Conversion method to translate a string to an object
+     * Picture fields are returned as a Multi-line text by the SP REST API.
+     * For usage in the template, it would be easier to access the object
+     * All other fields are returned as expected
+     * @param value : The raw field value
+     **************************************************************************************************/
+    private jsonParseField(value: any): any{
+        if (typeof value === 'string') {
+            try {
+                let jsonObject = JSON.parse(value);
+                return jsonObject;
+            }
+            catch {
+               return value;
+            }
+        }
+        return value;
+    }
 
     /**************************************************************************************************
      * Returns an error message based on the specified error object
