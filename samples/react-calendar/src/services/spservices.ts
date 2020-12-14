@@ -83,8 +83,8 @@ export default class spservices {
         Description: newEvent.Description,
         Geolocation: newEvent.geolocation,
         ParticipantsPickerId: { results: newEvent.attendes },
-        EventDate: new Date(moment(newEvent.EventDate).add(siteTimeZoneHours, 'hours').toISOString()),
-        EndDate: new Date(moment(newEvent.EndDate).add(siteTimeZoneHours, 'hours').toISOString()),
+        EventDate: new Date(moment(newEvent.EventDate, "YYYY-MM-DD HH:mm").add(siteTimeZoneHours, 'hours').format(moment.defaultFormatUtc)),
+        EndDate: new Date(moment(newEvent.EndDate, "YYYY-MM-DD HH:mm").add(siteTimeZoneHours, 'hours').format(moment.defaultFormatUtc)),
         Location: newEvent.location,
         fAllDayEvent: newEvent.fAllDayEvent,
         fRecurrence: newEvent.fRecurrence,
@@ -130,8 +130,8 @@ export default class spservices {
         EventType: event.EventType,
         title: await this.deCodeHtmlEntities(event.Title),
         Description: event.Description ? event.Description : '',
-        EventDate: new Date(moment(event.EventDate).subtract((siteTimeZoneHours), 'hour').toISOString()),
-        EndDate: new Date(moment(event.EndDate).subtract(siteTimeZoneHours, 'hour').toISOString()),
+        EventDate: new Date(moment(event.EventDate).subtract((siteTimeZoneHours), 'hour').format(moment.defaultFormatUtc)),
+        EndDate: new Date(moment(event.EndDate).subtract(siteTimeZoneHours, 'hour').format(moment.defaultFormatUtc)),
         location: event.Location,
         ownerEmail: event.Author.SipAddress,
         ownerPhoto: "",
@@ -179,8 +179,8 @@ export default class spservices {
         Description: updateEvent.Description,
         Geolocation: updateEvent.geolocation,
         ParticipantsPickerId: { results: updateEvent.attendes },
-        EventDate: new Date(moment(updateEvent.EventDate).add(siteTimeZoneHours, 'hours').toISOString()),
-        EndDate: new Date(moment(updateEvent.EndDate).add(siteTimeZoneHours, 'hours').toISOString()),
+        EventDate: new Date(moment(updateEvent.EventDate).add(siteTimeZoneHours, 'hours').format(moment.defaultFormatUtc)),
+        EndDate: new Date(moment(updateEvent.EndDate).add(siteTimeZoneHours, 'hours').format(moment.defaultFormatUtc)),
         Location: updateEvent.location,
         fAllDayEvent: updateEvent.fAllDayEvent,
         fRecurrence: updateEvent.fRecurrence,
@@ -449,7 +449,6 @@ export default class spservices {
    * @memberof spservices
    */
   public async getEvents(siteUrl: string, listId: string, eventStartDate: Date, eventEndDate: Date): Promise<IEventData[]> {
-
     let events: IEventData[] = [];
     if (!siteUrl) {
       return [];
@@ -515,8 +514,8 @@ export default class spservices {
             EventType: event.EventType,
             title: await this.deCodeHtmlEntities(event.Title),
             Description: event.Description,
-            EventDate: isAllDayEvent ? new Date(event.EventDate.slice(0, -1)) : new Date(moment(event.EventDate).subtract((siteTimeZoneHours), 'hour').toISOString()),
-            EndDate: isAllDayEvent ? new Date(event.EndDate.slice(0, -1)) : new Date(moment(event.EndDate).subtract(siteTimeZoneHours, 'hour').toISOString()),
+            EventDate: isAllDayEvent ? new Date(event.EventDate.slice(0, -1)) : moment(event.EventDate, "YYYY-MM-DD HH:mm").subtract((siteTimeZoneHours), 'hour').toDate(),
+            EndDate: isAllDayEvent ? new Date(event.EndDate.slice(0, -1)) : moment(event.EndDate, "YYYY-MM-DD HH:mm").subtract(siteTimeZoneHours, 'hour').toDate(),
             location: event.Location,
             ownerEmail: event.Author[0].email,
             ownerPhoto: userPictureUrl ?
